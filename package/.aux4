@@ -1,0 +1,108 @@
+{
+  "scope": "aux4",
+  "name": "search",
+  "version": "0.1.0",
+  "description": "File and content search utility with glob patterns and regex matching",
+  "license": "Apache-2.0",
+  "tags": [
+    "search",
+    "files",
+    "grep",
+    "find",
+    "content",
+    "pattern"
+  ],
+  "profiles": [
+    {
+      "name": "main",
+      "commands": [
+        {
+          "name": "search",
+          "execute": [
+            "profile:search"
+          ],
+          "help": {
+            "text": "File and content search utility"
+          }
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "commands": [
+        {
+          "name": "files",
+          "execute": [
+            "${packageDir}/aux4-search files values(pattern, path, exclude, maxDepth)"
+          ],
+          "help": {
+            "text": "Find files matching a glob pattern",
+            "variables": [
+              {
+                "name": "pattern",
+                "text": "Glob pattern to match (e.g., *.go, **/*.md)",
+                "arg": true
+              },
+              {
+                "name": "path",
+                "text": "Directory to search in",
+                "default": "."
+              },
+              {
+                "name": "exclude",
+                "text": "Comma-separated directory names to skip",
+                "default": "node_modules,.git"
+              },
+              {
+                "name": "maxDepth",
+                "text": "Maximum recursion depth",
+                "default": ""
+              }
+            ]
+          }
+        },
+        {
+          "name": "content",
+          "execute": [
+            "${packageDir}/aux4-search content values(pattern, path, include, exclude, limit, context)"
+          ],
+          "help": {
+            "text": "Search file contents using regex",
+            "variables": [
+              {
+                "name": "pattern",
+                "text": "Regex pattern to search for",
+                "arg": true
+              },
+              {
+                "name": "path",
+                "text": "Directory to search in",
+                "default": "."
+              },
+              {
+                "name": "include",
+                "text": "File glob filter (e.g., *.go, *.md)",
+                "default": ""
+              },
+              {
+                "name": "exclude",
+                "text": "Comma-separated directory names to skip",
+                "default": "node_modules,.git"
+              },
+              {
+                "name": "limit",
+                "text": "Maximum number of matches to return",
+                "default": "50"
+              },
+              {
+                "name": "context",
+                "text": "Number of lines to show before and after each match",
+                "default": "0"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
