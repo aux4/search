@@ -1,8 +1,3 @@
 .idea
-node_modules
-coverage
-local-test
-package/aux4-search
-package/dist
 **/.DS_Store
 **/*.zip

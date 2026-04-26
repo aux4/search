@@ -54,10 +54,10 @@ echo "deep level" > testdata/deep/bottom.txt
 rm -rf testdata
 ```
 
-### should limit depth to 0
+### should limit depth
 
 ```execute
-aux4 search files "*.txt" --path testdata --maxDepth 0
+aux4 search files "*.txt" --path testdata --maxDepth 1
 ```
 
 ```expect

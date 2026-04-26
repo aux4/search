@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "search",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "File and content search utility with glob patterns and regex matching",
   "license": "Apache-2.0",
   "tags": [
@@ -33,14 +33,14 @@
         {
           "name": "files",
           "execute": [
-            "${packageDir}/aux4-search files values(pattern, path, exclude, maxDepth)"
+            "bash -c 'P=\"$1\"; DIR=\"$2\"; EX=\"$3\"; MD=\"$4\"; ARGS=\"$DIR\"; if [ -n \"$MD\" ]; then ARGS=\"$ARGS -maxdepth $MD\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS -not -path \\\"*/$d/*\\\"\"; done; ARGS=\"$ARGS -name \\\"$P\\\" -type f\"; eval find $ARGS 2>/dev/null | sed \"s|^$DIR/||\" | sed \"s|^\\\\./||\" | sort' -- \"${pattern}\" \"${path}\" \"${exclude}\" \"${maxDepth}\""
           ],
           "help": {
             "text": "Find files matching a glob pattern",
             "variables": [
               {
                 "name": "pattern",
-                "text": "Glob pattern to match (e.g., *.go, **/*.md)",
+                "text": "Glob pattern to match (e.g., *.go, *.md)",
                 "arg": true
               },
               {
@@ -64,7 +64,7 @@
         {
           "name": "content",
           "execute": [
-            "${packageDir}/aux4-search content values(pattern, path, include, exclude, limit, context)"
+            "bash -c 'PAT=\"$1\"; DIR=\"$2\"; INC=\"$3\"; EX=\"$4\"; LIM=\"$5\"; CTX=\"$6\"; ARGS=\"-rn -i\"; if [ -n \"$INC\" ]; then ARGS=\"$ARGS --include=$INC\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS --exclude-dir=$d\"; done; if [ \"$CTX\" != \"0\" ] && [ -n \"$CTX\" ]; then ARGS=\"$ARGS -C $CTX\"; fi; ARGS=\"$ARGS -m $LIM\"; eval grep $ARGS -- \"$PAT\" \"$DIR\" 2>/dev/null || true' -- \"${pattern}\" \"${path}\" \"${include}\" \"${exclude}\" \"${limit}\" \"${context}\""
           ],
           "help": {
             "text": "Search file contents using regex",

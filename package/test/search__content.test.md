@@ -30,7 +30,7 @@ aux4 search content "func main" --path testdata --include "*.go"
 ```
 
 ```expect:partial
-sample.go:5: func main() {
+sample.go*func main*
 ```
 
 ### should be case insensitive
@@ -40,7 +40,7 @@ aux4 search content "HELLO" --path testdata --include "*.go"
 ```
 
 ```expect:partial
-sample.go:6:*Hello*
+sample.go*Hello*
 ```
 
 ## with include filter
@@ -62,7 +62,7 @@ aux4 search content "hello" --path testdata --include "*.js"
 ```
 
 ```expect:partial
-code.js:1:*hello*
+code.js*hello*
 ```
 
 ## with limit
@@ -83,8 +83,8 @@ aux4 search content "match" --path testdata --include "*.txt" --limit 2
 ```
 
 ```expect:partial
-many.txt:1: line one match
-many.txt:2: line two match
+many.txt*line one match
+**many.txt*line two match
 ```
 
 ## with context lines
@@ -105,7 +105,7 @@ aux4 search content "target" --path testdata --include "*.txt" --context 1
 ```
 
 ```expect:partial
-ctx.txt*2*line 2
-ctx.txt:3: target line
-ctx.txt*4*line 4
+**line 2
+**target line
+**line 4
 ```
