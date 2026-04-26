@@ -101,6 +101,72 @@
               }
             ]
           }
+        },
+        {
+          "name": "replace",
+          "execute": [
+            "bash -c 'PAT=\"$1\"; REP=\"$2\"; DIR=\"$3\"; INC=\"$4\"; EX=\"$5\"; ARGS=\"-rl -i\"; if [ -n \"$INC\" ]; then ARGS=\"$ARGS --include=$INC\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS --exclude-dir=$d\"; done; unset IFS; FILES=$(eval grep $ARGS -- \"$PAT\" \"$DIR\" 2>/dev/null); if [ -z \"$FILES\" ]; then echo \"No matches found\"; exit 0; fi; echo \"$FILES\" | while IFS= read -r f; do sed -i \"\" \"s/$PAT/$REP/g\" \"$f\" && echo \"modified: $f\"; done' -- \"${pattern}\" \"${with}\" \"${path}\" \"${include}\" \"${exclude}\""
+          ],
+          "help": {
+            "text": "Find and replace text across files",
+            "variables": [
+              {
+                "name": "pattern",
+                "text": "Text or regex pattern to find",
+                "arg": true
+              },
+              {
+                "name": "with",
+                "text": "Replacement text"
+              },
+              {
+                "name": "path",
+                "text": "Directory to search in",
+                "default": "."
+              },
+              {
+                "name": "include",
+                "text": "File glob filter (e.g., *.go, *.md)",
+                "default": ""
+              },
+              {
+                "name": "exclude",
+                "text": "Comma-separated directory names to skip",
+                "default": "node_modules,.git"
+              }
+            ]
+          }
+        },
+        {
+          "name": "count",
+          "execute": [
+            "bash -c 'PAT=\"$1\"; DIR=\"$2\"; INC=\"$3\"; EX=\"$4\"; ARGS=\"-rn -i -c\"; if [ -n \"$INC\" ]; then ARGS=\"$ARGS --include=$INC\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS --exclude-dir=$d\"; done; eval grep $ARGS -- \"$PAT\" \"$DIR\" 2>/dev/null | grep -v \":0$\" || true' -- \"${pattern}\" \"${path}\" \"${include}\" \"${exclude}\""
+          ],
+          "help": {
+            "text": "Count matches per file",
+            "variables": [
+              {
+                "name": "pattern",
+                "text": "Regex pattern to count",
+                "arg": true
+              },
+              {
+                "name": "path",
+                "text": "Directory to search in",
+                "default": "."
+              },
+              {
+                "name": "include",
+                "text": "File glob filter (e.g., *.go, *.md)",
+                "default": ""
+              },
+              {
+                "name": "exclude",
+                "text": "Comma-separated directory names to skip",
+                "default": "node_modules,.git"
+              }
+            ]
+          }
         }
       ]
     }

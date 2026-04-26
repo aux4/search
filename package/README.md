@@ -86,6 +86,50 @@ aux4 search content "TODO|FIXME" --context 3
 aux4 search content "import" --include "*.js" --limit 10
 ```
 
+### search replace
+
+Find and replace text across multiple files. Uses grep to locate matches and sed to replace in-place.
+
+```bash
+aux4 search replace "<pattern>" --with "<replacement>" [--path <dir>] [--include <glob>] [--exclude <patterns>]
+```
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `pattern` | Text or regex pattern to find | required |
+| `--with` | Replacement text | required |
+| `--path` | Directory to search in | `.` |
+| `--include` | File glob filter (e.g., `*.yaml`) | all files |
+| `--exclude` | Comma-separated directory names to skip | `node_modules,.git` |
+
+```bash
+# Replace localhost with 127.0.0.1 in all yaml files
+aux4 search replace "localhost" --with "127.0.0.1" --include "*.yaml"
+
+# Rename a function across Go files
+aux4 search replace "oldFunc" --with "newFunc" --include "*.go" --path src
+```
+
+### search count
+
+Count matches per file. Shows `file:count` for files with at least one match.
+
+```bash
+aux4 search count "<pattern>" [--path <dir>] [--include <glob>] [--exclude <patterns>]
+```
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `pattern` | Regex pattern to count | required |
+| `--path` | Directory to search in | `.` |
+| `--include` | File glob filter | all files |
+| `--exclude` | Comma-separated directory names to skip | `node_modules,.git` |
+
+```bash
+# Count TODOs per file
+aux4 search count "TODO" --include "*.js" --path src
+```
+
 ## License
 
 Apache-2.0
