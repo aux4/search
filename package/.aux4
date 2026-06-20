@@ -105,7 +105,7 @@
         {
           "name": "replace",
           "execute": [
-            "bash -c 'PAT=\"$1\"; REP=\"$2\"; DIR=\"$3\"; INC=\"$4\"; EX=\"$5\"; ARGS=\"-rl -i\"; if [ -n \"$INC\" ]; then ARGS=\"$ARGS --include=$INC\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS --exclude-dir=$d\"; done; unset IFS; FILES=$(eval grep $ARGS -- \"$PAT\" \"$DIR\" 2>/dev/null); if [ -z \"$FILES\" ]; then echo \"No matches found\"; exit 0; fi; echo \"$FILES\" | while IFS= read -r f; do sed -i \"\" \"s/$PAT/$REP/g\" \"$f\" && echo \"modified: $f\"; done' -- \"${pattern}\" \"${with}\" \"${path}\" \"${include}\" \"${exclude}\""
+            "bash -c 'PAT=\"$1\"; REP=\"$2\"; DIR=\"$3\"; INC=\"$4\"; EX=\"$5\"; ARGS=\"-rl -i\"; if [ -n \"$INC\" ]; then ARGS=\"$ARGS --include=$INC\"; fi; IFS=\",\"; for d in $EX; do d=$(echo $d|xargs); [ -n \"$d\" ] && ARGS=\"$ARGS --exclude-dir=$d\"; done; unset IFS; FILES=$(eval grep $ARGS -- \"$PAT\" \"$DIR\" 2>/dev/null); if [ -z \"$FILES\" ]; then echo \"No matches found\"; exit 0; fi; echo \"$FILES\" | while IFS= read -r f; do sed \"s/$PAT/$REP/g\" \"$f\" > \"$f.aux4tmp\" && mv \"$f.aux4tmp\" \"$f\" && echo \"modified: $f\"; done' -- \"${pattern}\" \"${with}\" \"${path}\" \"${include}\" \"${exclude}\""
           ],
           "help": {
             "text": "Find and replace text across files",
